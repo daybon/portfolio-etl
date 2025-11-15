@@ -1,22 +1,26 @@
-print("🟡 run_etl.py started executing...")
-
-try:
-    from etl_pipeline import PortfolioETL
-    print("✅ Successfully imported PortfolioETL")
-except ImportError as e:
-    print(f"❌ Import failed: {e}")
-    print("📁 Current directory files:")
-    import os
-    for file in os.listdir('.'):
-        print(f"   - {file}")
-    exit(1)
+from etl_pipeline import PortfolioETL
+from database import DatabaseManager
 
 if __name__ == "__main__":
-    print("🟡 Starting main execution...")
+    # Initialize ETL and Database
     etl = PortfolioETL()
-    portfolio_details, portfolio_metrics = etl.run()
+    db = DatabaseManager()
     
-    # Print results
-    print("\n📋 Portfolio Details:")
-    print(portfolio_details[['Ticker', 'Quantity', 'CurrentPrice', 'MarketValue', 'UnrealizedPnlPercent']])
-    print("🎉 ETL completed successfully!")
+    try:
+        # Connect to database
+        db.connect()
+        
+        # Run ETL
+        portfolio_details, portfolio_metrics = etl.run()
+
+        db.save_initial_holdings(portfolio_details)
+        
+        # Save to database
+        db.save_portfolio_snapshot(portfolio_details, portfolio_metrics)
+        
+        print("🎉 ETL Pipeline completed successfully!")
+        
+    except Exception as e:
+        print(f"❌ ETL Pipeline failed: {e}")
+    finally:
+        db.close()
