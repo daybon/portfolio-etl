@@ -20,11 +20,12 @@ class PortfolioETL:
             tickers = self.portfolio_df['Ticker'].tolist()
             print(f"📋 Fetching prices for: {tickers}")
             
-            self.price_data = yf.download(tickers, period="1d")['Close']
+            # Add auto_adjust=True to fix the warning
+            self.price_data = yf.download(tickers, period="1d", auto_adjust=True)['Close']
             print("✅ Current price data extracted")
             
             # Get historical data for volatility calculations (1 year)
-            self.historical_data = yf.download(tickers, period="1y")['Close']
+            self.historical_data = yf.download(tickers, period="1y", auto_adjust=True)['Close']
             print("✅ Historical data extracted (1 year)")
             
         except Exception as e:
