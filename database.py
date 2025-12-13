@@ -16,10 +16,10 @@ class DatabaseManager:
                 password='ClarissaAudrey@07',
                 port='5432'
             )
-            print("✅ Database connected")
+            print("Database connected")
             self.initialize_database()
         except Exception as e:
-            print(f"❌ Database connection failed: {e}")
+            print(f"Database connection failed: {e}")
             raise
     
     def initialize_database(self):
@@ -64,7 +64,7 @@ class DatabaseManager:
             """)
             
         self.conn.commit()
-        print("✅ All database tables created")
+        print("All database tables created")
 
     def save_initial_holdings(self, portfolio_df):
         """Save the original portfolio holdings to database"""
@@ -85,11 +85,11 @@ class DatabaseManager:
                     ))
                 
             self.conn.commit()
-            print("✅ Initial holdings saved to database")
+            print("Initial holdings saved to database")
             
         except Exception as e:
             self.conn.rollback()
-            print(f"❌ Failed to save initial holdings: {e}")
+            print(f"Failed to save initial holdings: {e}")
             raise
     
     def save_portfolio_snapshot(self, portfolio_details, portfolio_metrics):
@@ -125,15 +125,15 @@ class DatabaseManager:
                     ))
                 
             self.conn.commit()
-            print("✅ Portfolio snapshot saved to database")
+            print("Portfolio snapshot saved to database")
             
         except Exception as e:
             self.conn.rollback()
-            print(f"❌ Failed to save snapshot: {e}")
+            print(f"Failed to save snapshot: {e}")
             raise
     
     def close(self):
         """Close database connection"""
         if self.conn:
             self.conn.close()
-            print("✅ Database connection closed")
+            print("Database connection closed")
