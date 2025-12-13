@@ -14,22 +14,22 @@ class PortfolioETL:
         try:
             # Read portfolio from CSV
             self.portfolio_df = pd.read_csv('portfolio.csv')
-            print("✅ Portfolio data extracted")
+            print("Portfolio data extracted")
             
             # Get current prices
             tickers = self.portfolio_df['Ticker'].tolist()
-            print(f"📋 Fetching prices for: {tickers}")
+            print(f"Fetching prices for: {tickers}")
             
             # Add auto_adjust=True to fix the warning
             self.price_data = yf.download(tickers, period="1d", auto_adjust=True)['Close']
-            print("✅ Current price data extracted")
+            print("Current price data extracted")
             
             # Get historical data for volatility calculations (1 year)
             self.historical_data = yf.download(tickers, period="1y", auto_adjust=True)['Close']
-            print("✅ Historical data extracted (1 year)")
+            print("Historical (1 year) data extracted")
             
         except Exception as e:
-            print(f"❌ Extraction failed: {e}")
+            print(f"Extraction failed: {e}")
             raise
     
     def calculate_portfolio_metrics(self):
@@ -100,22 +100,21 @@ class PortfolioETL:
                 'annual_return': advanced_metrics['total_return']
             }
             
-            print("✅ Data transformation completed")
+            print("Data transformation completed")
             return self.portfolio_df, portfolio_metrics
             
         except Exception as e:
-            print(f"❌ Transformation failed: {e}")
+            print(f"Transformation failed: {e}")
             raise
     
     def run(self):
         """Execute the complete ETL pipeline"""
-        print("🚀 Starting ETL Pipeline...")
         self.extract()
         portfolio_details, portfolio_metrics = self.transform()
         
-        print(f"📊 Portfolio Value: ${portfolio_metrics['total_market_value']:,.2f}")
-        print(f"📈 Total Return: {portfolio_metrics['total_return_percent']:.2f}%")
-        print(f"📉 Annual Volatility: {portfolio_metrics['volatility']:.2f}%")
-        print(f"🎯 Sharpe Ratio: {portfolio_metrics['sharpe_ratio']:.2f}")
+        print(f"Portfolio Value: ${portfolio_metrics['total_market_value']:,.2f}")
+        print(f"Total Return: {portfolio_metrics['total_return_percent']:.2f}%")
+        print(f"Annual Volatility: {portfolio_metrics['volatility']:.2f}%")
+        print(f"Sharpe Ratio: {portfolio_metrics['sharpe_ratio']:.2f}")
         
         return portfolio_details, portfolio_metrics
