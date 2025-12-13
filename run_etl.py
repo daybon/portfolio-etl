@@ -18,9 +18,9 @@ if __name__ == "__main__":
         # Save to database
         db.save_portfolio_snapshot(portfolio_details, portfolio_metrics)
         
-        print("🎉 ETL Pipeline completed successfully!")
+        print("ETL Pipeline completed")
         
     except Exception as e:
-        print(f"❌ ETL Pipeline failed: {e}")
+        print(f"ETL Pipeline failed: {e}")
     finally:
         db.close()
