@@ -10,10 +10,10 @@ class DatabaseManager:
         """Connect to PostgreSQL database"""
         try:
             self.conn = psycopg2.connect(
-                host='localhost',
-                database='portfolio_metrics',
+                host='database-1.cz1wx0qlnvul.us-east-1.rds.amazonaws.com',
+                database='postgres',
                 user='postgres',
-                password='ClarissaAudrey@07',
+                password='HolyMolyZoly',
                 port='5432'
             )
             print("Database connected")
